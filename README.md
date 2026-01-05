@@ -106,9 +106,3 @@ Run locally:
 ```bash
 streamlit run src/app.py
 
-
-Probability calibration
-
-Market comparison and risk analysis
-
-Clear communication via interactive visualization
