@@ -1,0 +1,17 @@
+# Python
+__pycache__/
+*.pyc
+
+# Virtual environments
+.venv/
+venv/
+venv311/
+
+# Data & model artifacts
+data/
+models/
+
+# OS / IDE
+.DS_Store
+.vscode/
+.idea/
