@@ -1,18 +1,20 @@
 # src/app.py
+import os
 import streamlit as st
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
-import os
 from typing import Optional
 
 st.set_page_config(layout="wide", page_title="Bet_Model Dashboard")
 
+# ---- data / paths ----
 DATA_DIR = "data"
 PRED_XGB = os.path.join(DATA_DIR, "predictions_xgb_oos_improved.csv")
 PRED_CLEAN = os.path.join(DATA_DIR, "predictions_oos_clean.csv")
-BANKROLL_IMG = os.path.join(DATA_DIR, "bankroll_kelly.png")
+PRED_SAMPLE = os.path.join(DATA_DIR, "sample_predictions.csv")  # keep a tiny sample in repo
+BANKROLL_IMG = os.path.join(DATA_DIR, "sample_bankroll.png")
 
 st.title("Bet_Model — Model vs Market dashboard")
 st.markdown(
@@ -64,14 +66,16 @@ def compute_kelly(odds: float, p_model: float) -> float:
     return max(0.0, float(f))
 
 # -------------------------
-# Load data (prefer XGB predictions, fallback to clean predictions)
+# Load data (prefer XGB predictions, fallback to clean predictions, fallback to sample)
 # -------------------------
 pred_xgb = load_predictions(PRED_XGB)
 pred_clean = load_predictions(PRED_CLEAN)
-pred = pred_xgb if pred_xgb is not None else pred_clean
+pred_sample = load_predictions(PRED_SAMPLE)
+
+pred = pred_xgb if pred_xgb is not None else (pred_clean if pred_clean is not None else pred_sample)
 
 if pred is None:
-    st.error(f"Couldn't find prediction CSVs. Put them in `{DATA_DIR}/` and re-run.")
+    st.error("No prediction data found. Add `data/sample_predictions.csv` or real predictions and re-run.")
     st.stop()
 
 # -------------------------
