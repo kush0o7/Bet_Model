@@ -8,9 +8,7 @@ venv/
 venv311/
 
 # Data & model artifacts
-data/*
-!data/sample_predictions.csv
-!data/sample_bankroll.png
+
 
 models/
 
